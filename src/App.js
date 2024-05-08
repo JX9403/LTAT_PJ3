@@ -3,7 +3,7 @@ import "./App.css";
 import Card from "./components/Card";
 
 function App() {
-  const[musicNumber, setMusicNumber] = useState(1);
+  const[musicNumber, setMusicNumber] = useState(0);
   return (
     <div className="container">
       

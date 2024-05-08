@@ -9,7 +9,7 @@ export default function Card({ props: { musicNumber, setMusicNumber } }) {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [play, setPlay] = useState(false);
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState(50);
   const [openVolume, setOpenVolume] = useState(false);
   const [repeat, setRepeat] = useState("repeat");
   const audioRef = useRef();
@@ -51,11 +51,22 @@ export default function Card({ props: { musicNumber, setMusicNumber } }) {
     setCurrentTime(currentTime);
   };
 
-  const handleNextPrev = (n) => {
-    setMusicNumber((value) => {
-      if (n > 0) return value + n > musics.length - 1 ? 0 : value + n;
-      return value + n < musics.length - 1 ? 0 : value + n;
+  const handleNext = () => {
+    setMusicNumber(value => {
+      if( value + 1 > musics.length - 1){
+        return 0;
+      } else return value + 1;
     });
+   
+  };
+
+  const handlePrev = () => {
+    setMusicNumber(value => {
+      if( value - 1 < 0 ){
+        return musics.length-1;
+      } else return value - 1;
+    });
+
   };
 
   const handleRepeat = () => {
@@ -78,7 +89,7 @@ export default function Card({ props: { musicNumber, setMusicNumber } }) {
       case "shuffle":
         return handleShuffle();
         default:
-          return handleNextPrev(1)
+          return handleNext();
     }
   };
 
@@ -141,7 +152,7 @@ export default function Card({ props: { musicNumber, setMusicNumber } }) {
               <i
                 className="material-symbols-outlined"
                 id="prev"
-                onClick={() => handleNextPrev(-1)}
+                onClick={() => handlePrev()}
               >
                 skip_previous
               </i>
@@ -153,7 +164,7 @@ export default function Card({ props: { musicNumber, setMusicNumber } }) {
               <i
                 className="material-symbols-outlined"
                 id="next"
-                onClick={() => handleNextPrev(1)}
+                onClick={() => handleNext()}
               >
                 skip_next
               </i>
@@ -203,7 +214,10 @@ export default function Card({ props: { musicNumber, setMusicNumber } }) {
                   <tr
                     key={song.id}
                     className="row"
-                    onClick={() => handleSong(song.id)}
+                    onClick={() => {
+                      // console.log()
+                      handleSong(song.id - 1);
+                    }}
                   >
                     <td className="col col-1">{song.id}</td>
                     <td className="col col-2">{song.title}</td>
